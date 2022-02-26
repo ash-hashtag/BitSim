@@ -33,6 +33,7 @@ static unsigned int CompileShader(unsigned int type, const string& source)
 static unsigned int CreateShader(const string& vertexShader, const string& fragmentShader) 
 {
     unsigned int program = glCreateProgram();
+
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
@@ -75,16 +76,15 @@ int main(void)
     unsigned int buffer;
 
     float positions[6] = {
-        0.5, 0.5, 
-        0, 0,
-        -0.5, 0.5
+        0, 0.5, 
+        0.5, 0,
+        -0.5, 0
     };
 
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
-
-    glDisableVertexAttribArray(0);
+    glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
 
@@ -96,7 +96,7 @@ int main(void)
         " gl_Position = position;\n"
         "}\n";
 
-        string fragmentShader =
+    string fragmentShader =
         "#version 330 core\n"
         "layout(location = 0) out vec4 color;\n"
         "void main()\n"
@@ -128,10 +128,11 @@ int main(void)
         /* Poll for and process events */
         glfwPollEvents();
 
-        //glfwSwapInterval(1);
+        glfwSwapInterval(1);
 
     }
 
+    glDeleteProgram(shader);
     glfwTerminate();
     return 0;
 }
