@@ -115,13 +115,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        /*
-        glBegin(GL_TRIANGLES);
-        glVertex2f(positions[0], positions[1]);
-        glVertex2f(positions[2], positions[3]);
-        glVertex2f(positions[4], positions[5]);
-        glEnd();
-        */
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -134,5 +128,6 @@ int main(void)
 
     glDeleteProgram(shader);
     glfwTerminate();
+
     return 0;
 }
