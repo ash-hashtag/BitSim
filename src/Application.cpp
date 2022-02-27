@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 
 struct Timer {
@@ -141,32 +142,24 @@ int main(void)
         std::cout << "glew isn't opening\n";
     {
 
-        float positions[8] = {
+        const float positions[8] = {
             -0.5, -0.5,
             0.5, -0.5,
             0.5, 0.5,
             -0.5, 0.5
         };
 
-        unsigned int indices[] = {
+        const unsigned int indices[] = {
             0, 1, 2,
             2, 3, 0
         };
 
-        unsigned int vao;
-
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
-
+        VertexArray va;
+        VertexBufferLayout layout;
         VertexBuffer vb(positions, 8 * sizeof(float));
-        /*
-        unsigned int m_RendererID;
-        glGenBuffers(1, &m_RendererID);
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, 6*sizeof(float), positions, GL_STATIC_DRAW);
-        */
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+        
+        layout.Push<float>(2);
+        va.AddBuffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
@@ -187,7 +180,8 @@ int main(void)
             glUseProgram(shader);
             glUniform4f(u_loc, r, 0.3f, r, 1.0f);
             //glDrawArrays(GL_TRIANGLES, 0, 3);
-            glBindVertexArray(vao);
+            va.Bind();
+            ib.Bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
             //glDrawArrays(GL_POLYGON, 0, 4);
             if (r > 1.0f)
