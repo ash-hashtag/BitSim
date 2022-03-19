@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "vendor/stb_img/stb_img.h"
+#include "stb_img/stb_img.h"
 
 Texture::Texture(const std::string& path)
 	:m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0)
@@ -25,7 +25,10 @@ Texture::~Texture()
 {
 	glDeleteTextures(1, &m_RendererID);
 }
-
+void Texture::setTexture() const
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);
+}
 void Texture::Bind(unsigned int slot) const
 {
 	glActiveTexture(GL_TEXTURE0 + slot);

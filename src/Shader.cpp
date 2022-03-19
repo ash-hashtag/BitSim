@@ -51,6 +51,11 @@ int Shader::GetUniformLocation(const std::string& name)
     return location;
 }
 
+void Shader::SetUniformMat4f(const std::string& name, const glm::mat4 matrix)
+{
+    glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
+}
+
 ShaderProgramSource Shader::ParseShader(const std::string path)
 {
     enum class shaderType {
